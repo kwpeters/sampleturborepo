@@ -1,4 +1,25 @@
-# Turborepo starter
+# Sample Turbo Repo
+
+## Tips
+
+- This monorepo uses ESLint to lint source code.  Therefore, use of the Visual
+  Studio Code [ESLint
+  extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+  is recommended.  You must change the following extension setting so that the
+  correct ESLint configuration file can be resolved for the source code files
+  within this repo:
+
+  ```text
+  "eslint.workingDirectories": [
+          {
+              "mode": "auto"
+          }
+      ]
+  ```
+
+---
+
+## Turborepo starter
 
 This is an official starter Turborepo.
 
