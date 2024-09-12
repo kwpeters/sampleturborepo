@@ -37,11 +37,23 @@ module.exports = {
         ".*.js",
         "node_modules/",
         "dist/",
+        "out/",
+        "snapshot/",
     ],
     overrides: [
         {
             files: ["*.js?(x)", "*.ts?(x)"],
         },
+        {
+            "files": [
+                "*.test.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/no-empty-function": "off",
+                "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/no-floating-promises": "off"
+            }
+        }
     ],
     rules: {
         "@typescript-eslint/brace-style": [
