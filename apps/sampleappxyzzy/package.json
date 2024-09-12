@@ -8,7 +8,6 @@
     "test": "npx jasmine --color --config=./jasmine.json",
     "lint": "eslint ./src"
   },
-  "exports": {},
   "dependencies": {
     "@repo/samplelibxyzzy": "*"
   },
