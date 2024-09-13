@@ -744,6 +744,7 @@ module.exports = {
                 ]
             }
         ],
-        "import/order": ["error"]
+        "import/order": ["error"],
+        "import/no-unresolved": "error"
     }
 };
