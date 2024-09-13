@@ -115,6 +115,4 @@ npx turbo run build --graph | dot -T png > deps.png && start deps.png
 
 ## TODO
 
-- [ ] Hoist common TS compiler settings into a base tsconfig.json file that is
-  then extended.
 - [ ] Separate cjs bootstrap code from rest of app.
