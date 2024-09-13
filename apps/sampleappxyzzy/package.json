@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "echo 'Add dev script here'",
-    "build": "tsc --build",
+    "build": "npm run build:ts && npm run build:sea",
+    "build:ts": "tsc --build",
     "build:bundle": "esbuild .\\dist\\index.cjs --bundle --platform=node --outfile=.\\dist\\index-bundle.cjs",
     "build:sea-blob": "node --experimental-sea-config sea-config.json",
     "build:cp-node-exe": "node -e \"require('fs').copyFileSync(process.execPath, 'dist/hello.exe')\"",
