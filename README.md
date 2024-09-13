@@ -17,6 +17,12 @@
       ]
   ```
 
+## TODO
+
+- [ ] Hoist common TS compiler settings into a base tsconfig.json file that is
+  then extended.
+
+
 ---
 
 ## Turborepo starter
