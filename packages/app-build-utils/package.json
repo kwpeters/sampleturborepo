@@ -1,11 +1,14 @@
 {
-    "name": "@repo/build-utils",
+    "name": "@repo/app-build-utils",
     "version": "0.0.0",
     "private": true,
     "scripts": {
         "build": "tsc --build",
         "test": "npx jasmine --color --config=./jasmine.json",
         "lint": "eslint ./src"
+    },
+    "dependencies": {
+        "yargs": "^17.7.2"
     },
     "devDependencies": {
         "@repo/eslint-config": "*",
