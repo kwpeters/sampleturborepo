@@ -1,5 +1,5 @@
 {
-    "name": "@repo/app-build-utils",
+    "name": "@repo/build-utils-app",
     "version": "0.0.0",
     "private": true,
     "scripts": {
