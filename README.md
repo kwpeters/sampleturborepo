@@ -1,5 +1,7 @@
 # Sample Turbo Repo
 
+This monorepo contains packages and applications that use the following tools:
+
 - This repo uses [TypeScript](https://www.typescriptlang.org/) for static type
   checking.
 - This repo uses [ESLint](https://eslint.org/) for code linting.
@@ -14,6 +16,11 @@
     - [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
     - [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
     - [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- Apps that require distribution as standalone executables are created using
+  Node.js's [single executable
+  application](https://nodejs.org/dist/latest-v20.x/docs/api/single-executable-applications.html)
+  feature.  This is currently an experimental feature that is in active
+  development.
 
 ## Generating a Dependency Graph
 
