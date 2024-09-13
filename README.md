@@ -115,6 +115,5 @@ npx turbo run build --graph | dot -T png > deps.png && start deps.png
 
 ## TODO
 
-- [ ] Removed unneeded sample apps (docs, web) and packages (ui).
 - [ ] Hoist common TS compiler settings into a base tsconfig.json file that is
   then extended.
