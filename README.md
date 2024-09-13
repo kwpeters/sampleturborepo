@@ -112,7 +112,3 @@ Now, you can generate the dependency graph, pipe it into `dot` and open the outp
 ```powershell
 npx turbo run build --graph | dot -T png > deps.png && start deps.png
 ```
-
-## TODO
-
-- [ ] Separate cjs bootstrap code from rest of app.
