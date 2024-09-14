@@ -12,11 +12,11 @@
     "build:rm-node-exe-sig": "signtool remove /s dist/hello.exe",
     "build:node-exe-inject-blob": "postject dist/hello.exe NODE_SEA_BLOB dist/index-bundle.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
     "build:sea": "npm run build:bundle && npm run build:sea-blob && npm run build:cp-node-exe && npm run build:rm-node-exe-sig && npm run build:node-exe-inject-blob",
-    "test": "npx jasmine --color --config=./jasmine.json",
+    "test": "tsx ../../node_modules/jasmine/bin/jasmine.js --color --config=./jasmine.json",
     "lint": "eslint ./src"
   },
   "dependencies": {
-    "@repo/samplelibxyzzy": "*"
+    "@repo/sample-lib-xyzzy": "*"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

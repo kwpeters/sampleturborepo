@@ -1,0 +1,27 @@
+{
+  "name": "@repo/sample-app-xyzzy",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "npm run build:ts",
+    "build:ts": "tsc --build",
+    "test": "tsx ../../node_modules/jasmine/bin/jasmine.js --color --config=./jasmine.json",
+    "lint": "eslint ./src"
+  },
+  "dependencies": {
+    "@repo/depot": "*"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/jasmine": "^5.1.4",
+    "@types/node": "^20.16.5",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8",
+    "jasmine": "^5.3.0",
+    "tsx": "^4.19.1",
+    "typescript": "5.5.*"
+  }
+}

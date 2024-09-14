@@ -1,4 +1,4 @@
-import { greet } from "@repo/samplelibxyzzy/stringHelpers";
+import { greet } from "@repo/sample-lib-xyzzy/sampleModule";
 
 
 export async function main(): Promise<number> {
