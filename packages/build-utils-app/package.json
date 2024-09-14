@@ -11,7 +11,7 @@
         "yargs": "^17.7.2"
     },
     "devDependencies": {
-        "@repo/eslint-config": "*",
+        "@repo/config-eslint": "*",
         "@repo/typescript-config": "*",
         "@types/jasmine": "^5.1.4",
         "@types/yargs": "^17.0.24",

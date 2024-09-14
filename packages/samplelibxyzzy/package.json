@@ -15,7 +15,7 @@
         }
     },
     "devDependencies": {
-        "@repo/eslint-config": "*",
+        "@repo/config-eslint": "*",
         "@repo/typescript-config": "*",
         "@types/jasmine": "^5.1.4",
         "@typescript-eslint/eslint-plugin": "^7.1.0",

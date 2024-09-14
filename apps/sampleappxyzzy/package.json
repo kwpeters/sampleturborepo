@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@repo/build-utils-app": "*",
-    "@repo/eslint-config": "*",
+    "@repo/config-eslint": "*",
     "@repo/typescript-config": "*",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^20.16.5",
