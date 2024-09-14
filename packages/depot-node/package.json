@@ -1,0 +1,72 @@
+{
+    "name": "@repo/depot-node",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "echo 'Add dev script here'",
+        "build": "tsc --build",
+        "test": "tsx ../../node_modules/jasmine/bin/jasmine.js --color --config=./jasmine.json",
+        "lint": "eslint ./src"
+    },
+    "exports": {
+        "./collectorStream": {
+            "types": "./src/collectorStream.mts",
+            "default": "./dist/collectorStream.mjs"
+        },
+        "./directory": {
+            "types": "./src/directory.mts",
+            "default": "./dist/directory.mjs"
+        },
+        "./file": {
+            "types": "./src/file.mts",
+            "default": "./dist/file.mjs"
+        },
+        "./listenerTracker": {
+            "types": "./src/listenerTracker.mts",
+            "default": "./dist/listenerTracker.mjs"
+        },
+        "./nodeTypes": {
+            "types": "./src/nodeTypes.mts",
+            "default": "./dist/nodeTypes.mjs"
+        },
+        "./nullStream": {
+            "types": "./src/nullStream.mts",
+            "default": "./dist/nullStream.mjs"
+        },
+        "./os": {
+            "types": "./src/os.mts",
+            "default": "./dist/os.mjs"
+        },
+        "./pathHelpers": {
+            "types": "./src/pathHelpers.mts",
+            "default": "./dist/pathHelpers.mjs"
+        },
+        "./promiseHelpers": {
+            "types": "./src/promiseHelpers.mts",
+            "default": "./dist/promiseHelpers.mjs"
+        },
+        "./spawn2": {
+            "types": "./src/spawn2.mts",
+            "default": "./dist/spawn2.mjs"
+        }
+    },
+    "dependencies": {
+        "@repo/depot": "*",
+        "lodash-es": "^4.17.21",
+        "strip-ansi": "^7.1.0",
+        "strip-json-comments": "^5.0.1"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "*",
+        "@repo/typescript-config": "*",
+        "@types/jasmine": "^5.1.4",
+        "@types/lodash-es": "^4.17.7",
+        "@types/node": "^20.16.5",
+        "@typescript-eslint/eslint-plugin": "^7.1.0",
+        "@typescript-eslint/parser": "^7.1.0",
+        "eslint": "^8",
+        "jasmine": "^5.3.0",
+        "tsx": "^4.19.1",
+        "typescript": "5.5.*"
+    }
+}

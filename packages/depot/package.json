@@ -9,6 +9,10 @@
         "lint": "eslint ./src"
     },
     "exports": {
+        "./deferred": {
+            "types": "./src/deferred.mts",
+            "default": "./dist/deferred.mjs"
+        },
         "./errorHelpers": {
             "types": "./src/errorHelpers.mts",
             "default": "./dist/errorHelpers.mjs"
@@ -53,9 +57,17 @@
             "types": "./src/promiseResult.mts",
             "default": "./dist/promiseResult.mjs"
         },
+        "./regexpHelpers": {
+            "types": "./src/regexpHelpers.mts",
+            "default": "./dist/regexpHelpers.mjs"
+        },
         "./result": {
             "types": "./src/result.mts",
             "default": "./dist/result.mjs"
+        },
+        "./storageSize": {
+            "types": "./src/storageSize.mts",
+            "default": "./dist/storageSize.mjs"
         },
         "./utilityTypes": {
             "types": "./src/utilityTypes.mts",
