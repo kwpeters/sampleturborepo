@@ -1,5 +1,5 @@
 {
-    "extends": "@repo/typescript-config/tsconfig.sea-app.json",
+    "extends": "@repo/config-typescript/tsconfig.sea-app.json",
     "compilerOptions": {
         "outDir": "dist"
     },
