@@ -1,6 +1,12 @@
-import * as url from "url";
+import * as url from "node:url";
+import * as os from "node:os";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
 import { Result, SucceededResult } from "@repo/depot/result";
 import { PromiseResult } from "@repo/depot/promiseResult";
+
+// Command modules
+import { def as cmdDefCjsToSeaApp } from "./commandCjsToSeaApp.mjs";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +38,25 @@ function runningThisScript(): boolean {
 ////////////////////////////////////////////////////////////////////////////////
 
 async function main(): Promise<Result<number, string>> {
-    await Promise.resolve(0);
-    console.log("hello world");
-    return new SucceededResult(0);
+    let retVal: Result<number, string> = new SucceededResult(0);
+
+    const __argv = await yargs(hideBin(process.argv))
+    .usage(
+        [
+            "Provides commands that help build apps within this repo."
+        ].join(os.EOL)
+    )
+    .command(
+        cmdDefCjsToSeaApp.command,
+        cmdDefCjsToSeaApp.description,
+        cmdDefCjsToSeaApp.builder,
+        async (argv) => {
+            retVal = await cmdDefCjsToSeaApp.handler(argv);
+        }
+    )
+    .help()
+    .wrap(80)
+    .argv;
+
+    return retVal;
 }
