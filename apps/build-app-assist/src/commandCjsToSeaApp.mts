@@ -1,15 +1,19 @@
-import * as os from "node:os";
 import { promisify } from "node:util";
 import * as childProcess from "node:child_process";
 import { ArgumentsCamelCase, Argv } from "yargs";
 import { FailedResult, Result, SucceededResult } from "@repo/depot/result";
 import { pipeAsync } from "@repo/depot/pipeAsync2";
-import { Directory } from "@repo/depot-node/directory";
 import { File } from "@repo/depot-node/file";
 import { PromiseResult } from "@repo/depot/promiseResult";
 
 
 const exec = promisify(childProcess.exec);
+
+const commandDescription = [
+    "Bundles the specified CJS app into a Node Single Executable Application (SEA). ",
+    "See: https://nodejs.org/dist/latest-v20.x/docs/api/single-executable-applications.html"
+].join("");
+
 
 /**
   * A type that describes the properties that are added to the Yargs arguments
@@ -24,12 +28,7 @@ interface IArgsCommand {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const builder = (yargs: Argv<NonNullable<unknown>>) => {
     return  yargs
-    .usage(
-        [
-            "Bundles the specified CJS app into a Node Single Executable Application (SEA).",
-            "See: https://nodejs.org/dist/latest-v20.x/docs/api/single-executable-applications.html"
-        ].join(os.EOL)
-    )
+    .usage(commandDescription)
     .option(
         "inputCjsFile",
         {
@@ -64,52 +63,123 @@ async function handler(argv: ArgumentsCamelCase<IArgsCommand>): Promise<Result<n
     }
 
     const config = configRes.value;
-    const bundleFile = new File(config.inputCjsFile.directory,
-                                config.inputCjsFile.baseName + "-bundle" + config.inputCjsFile.extName);
-    const blobFile = new File(config.inputCjsFile.directory,
-                              bundleFile.baseName + ".blob");
+    const bundleFile = new File(
+        config.inputCjsFile.directory,
+        config.inputCjsFile.baseName + "-bundle" + config.inputCjsFile.extName
+    );
+    const blobFile = new File(
+        config.inputCjsFile.directory,
+        bundleFile.baseName + ".blob"
+    );
+    const seaConfigFile = new File(
+        config.inputCjsFile.directory,
+        config.inputCjsFile.baseName + "-sea-config.json"
+    );
+    const exeFile = new File(
+        config.inputCjsFile.directory,
+        config.exeBaseName + ".exe"
+    );
 
-    // Generate the SEA config file.
-    const seaConfigFile = new File(config.inputCjsFile.directory,
-                                   "sea-config.json");
+    const res = await pipeAsync(
+        createBundle(config.inputCjsFile, bundleFile),
+        (res) => PromiseResult.tapSuccess(console.log, res),
+        (res) => PromiseResult.bind(() => createSeaConfigFile(bundleFile, blobFile, true, seaConfigFile), res),
+        (res) => PromiseResult.tapSuccess(console.log, res),
+        (res) => PromiseResult.bind(() => createBlob(seaConfigFile), res),
+        (res) => PromiseResult.tapSuccess(console.log, res),
+        (res) => PromiseResult.bind(() => copyNodeExecutable(exeFile), res),
+        (res) => PromiseResult.tapSuccess(console.log, res),
+        (res) => PromiseResult.bind(() => removeSignature(exeFile), res),
+        (res) => PromiseResult.tapSuccess(console.log, res),
+        (res) => PromiseResult.bind(() => injectBlob(blobFile, exeFile), res),
+        (res) => PromiseResult.tapSuccess(console.log, res)
+    );
+
+    if (res.failed) {
+        throw new Error(res.error);
+    }
+
+    return new SucceededResult(0);
+}
+
+
+async function createBundle(
+    inputCjs: File,
+    bundleFile: File
+): Promise<Result<string, string>> {
+    try {
+        await exec(`npx esbuild ${inputCjs.toString()} --bundle --platform=node --outfile=${bundleFile.toString()}`);
+        return new SucceededResult(`ESBuild successfully bundled ${bundleFile.toString()}.`);
+    }
+    catch (err) {
+        const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
+        return new FailedResult(`Bundling failed. ESBuild exited with ${errTyped.code}. ${errTyped.stderr}`);
+    }
+}
+
+async function createSeaConfigFile(
+    bundleFile: File,
+    blobFile: File,
+    disableExperimentalSEAWarning: boolean,
+    seaConfigFile: File
+): Promise<Result<string, string>> {
     const seaConfig: ISeaConfig = {
         main:                          bundleFile.fileName,
         output:                        blobFile.fileName,
-        disableExperimentalSEAWarning: true
+        disableExperimentalSEAWarning: disableExperimentalSEAWarning
     };
-    seaConfigFile.writeJsonSync(seaConfig);
-
-    const exeFile = new File(config.inputCjsFile.directory,
-                             config.exeBaseName + ".exe");
-
-    const res = pipeAsync(
-        bundle(),
-        (res) => PromiseResult.bind(async () => {}, res)
-    );
-
-    // Bundle
-    // esbuild .\\dist\\index.cjs --bundle --platform=node --outfile=.\\dist\\index-bundle.cjs
-
-    // Generate the blob.
-    // node --experimental-sea-config sea-config.json
-
-    // Create a copy of the Node executable.
-    // node -e \"require('fs').copyFileSync(process.execPath, 'dist/hello.exe')\"
-
-    // Remove the Node executable's signature.
-    // signtool remove /s dist/hello.exe
-
-    // Inject the blob into the Node executable.
-    // postject dist/hello.exe NODE_SEA_BLOB dist/index-bundle.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+    await seaConfigFile.writeJson(seaConfig);
+    return new SucceededResult(`Created Node.js SEA config file ${seaConfigFile.toString()}.`);
+}
 
 
-    // async function lsExample() {
-    //     const { stdout, stderr } = await exec("ls");
-    //     console.log("stdout:", stdout);
-    //     console.error("stderr:", stderr);
-    // }
+async function createBlob(seaConfigFile: File): Promise<Result<string, string>> {
+    const cmd = `node --experimental-sea-config ${seaConfigFile.fileName}`;
+    try {
+        await exec(cmd, {cwd: seaConfigFile.directory.absPath()});
+        return new SucceededResult(`SEA blob successfully created.`);
+    }
+    catch (err) {
+        const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
+        return new FailedResult(`Blob creation failed. Node exited with ${errTyped.code}. ${errTyped.stderr}`);
+    }
+}
 
-    return new SucceededResult(0);
+async function copyNodeExecutable(exeFile: File): Promise<Result<string, string>> {
+    const escapedExeFile = exeFile.toString().replace("\\", "\\\\");
+    const cmd = `node -e "require('fs').copyFileSync(process.execPath, '${escapedExeFile}')"`;
+    try {
+        // Don't use process.execPath from this process.  It may be tsx.
+        await exec(cmd);
+        return new SucceededResult("Successfully copied Node executable.");
+    }
+    catch (err) {
+        const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
+        return new FailedResult(`Failed to copy node executable. Node exited with ${errTyped.code}. ${errTyped.stderr}`);
+    }
+}
+
+
+async function removeSignature(exeFile: File): Promise<Result<string, string>> {
+    try {
+        await exec(`signtool remove /s ${exeFile.toString()}`);
+        return new SucceededResult(`Successfully removed executable signature.`);
+    }
+    catch (err) {
+        const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
+        return new FailedResult(`Signtool failed to remove signature. Signtool exited with ${errTyped.code}. ${errTyped.stderr}`);
+    }
+}
+
+async function injectBlob(blobFile: File, exeFile: File): Promise<Result<string, string>> {
+    try {
+        await exec(`npx postject ${exeFile.toString()} NODE_SEA_BLOB ${blobFile.toString()} --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2`);
+        return new SucceededResult(`Successfully injected blob into Node executable.`);
+    }
+    catch (err) {
+        const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
+        return new FailedResult(`Blob injection failed. Postject exited with ${errTyped.code}. ${errTyped.stderr}`);
+    }
 }
 
 
@@ -155,8 +225,8 @@ async function argsToConfig(
  * Definition of this subcommand.
  */
 export const def = {
-    command:     "import",
-    description: "Imports files into the specified photo library.",
+    command:     "cjsToSeaApp",
+    description: commandDescription,
     builder:     builder,
     handler:     handler
 };
