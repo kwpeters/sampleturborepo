@@ -24,8 +24,6 @@
     "esbuild": "^0.23.1",
     "eslint": "^8",
     "jasmine": "^5.3.0",
-    "postject": "^1.0.0-alpha.6",
-    "tsx": "^4.19.1",
-    "typescript": "5.5.*"
+    "postject": "^1.0.0-alpha.6"
   }
 }
