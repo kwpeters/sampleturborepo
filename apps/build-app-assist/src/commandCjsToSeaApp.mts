@@ -109,13 +109,14 @@ async function createBundle(
 ): Promise<Result<string, string>> {
     try {
         await exec(`npx esbuild ${inputCjs.toString()} --bundle --platform=node --outfile=${bundleFile.toString()}`);
-        return new SucceededResult(`ESBuild successfully bundled ${bundleFile.toString()}.`);
+        return new SucceededResult(`✅ ESBuild successfully bundled ${bundleFile.toString()}.`);
     }
     catch (err) {
         const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
-        return new FailedResult(`Bundling failed. ESBuild exited with ${errTyped.code}. ${errTyped.stderr}`);
+        return new FailedResult(`❌ Bundling failed. ESBuild exited with ${errTyped.code}. ${errTyped.stderr}`);
     }
 }
+
 
 async function createSeaConfigFile(
     bundleFile: File,
@@ -129,7 +130,7 @@ async function createSeaConfigFile(
         disableExperimentalSEAWarning: disableExperimentalSEAWarning
     };
     await seaConfigFile.writeJson(seaConfig);
-    return new SucceededResult(`Created Node.js SEA config file ${seaConfigFile.toString()}.`);
+    return new SucceededResult(`✅ Created Node.js SEA config file ${seaConfigFile.toString()}.`);
 }
 
 
@@ -137,13 +138,14 @@ async function createBlob(seaConfigFile: File): Promise<Result<string, string>> 
     const cmd = `node --experimental-sea-config ${seaConfigFile.fileName}`;
     try {
         await exec(cmd, {cwd: seaConfigFile.directory.absPath()});
-        return new SucceededResult(`SEA blob successfully created.`);
+        return new SucceededResult(`✅ SEA blob successfully created.`);
     }
     catch (err) {
         const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
-        return new FailedResult(`Blob creation failed. Node exited with ${errTyped.code}. ${errTyped.stderr}`);
+        return new FailedResult(`❌ Blob creation failed. Node exited with ${errTyped.code}. ${errTyped.stderr}`);
     }
 }
+
 
 async function copyNodeExecutable(exeFile: File): Promise<Result<string, string>> {
     const escapedExeFile = exeFile.toString().replace("\\", "\\\\");
@@ -151,11 +153,11 @@ async function copyNodeExecutable(exeFile: File): Promise<Result<string, string>
     try {
         // Don't use process.execPath from this process.  It may be tsx.
         await exec(cmd);
-        return new SucceededResult("Successfully copied Node executable.");
+        return new SucceededResult("✅ Successfully copied Node executable.");
     }
     catch (err) {
         const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
-        return new FailedResult(`Failed to copy node executable. Node exited with ${errTyped.code}. ${errTyped.stderr}`);
+        return new FailedResult(`❌ Failed to copy node executable. Node exited with ${errTyped.code}. ${errTyped.stderr}`);
     }
 }
 
@@ -163,22 +165,23 @@ async function copyNodeExecutable(exeFile: File): Promise<Result<string, string>
 async function removeSignature(exeFile: File): Promise<Result<string, string>> {
     try {
         await exec(`signtool remove /s ${exeFile.toString()}`);
-        return new SucceededResult(`Successfully removed executable signature.`);
+        return new SucceededResult(`✅ Successfully removed executable signature.`);
     }
     catch (err) {
         const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
-        return new FailedResult(`Signtool failed to remove signature. Signtool exited with ${errTyped.code}. ${errTyped.stderr}`);
+        return new FailedResult(`❌ Signtool failed to remove signature. Signtool exited with ${errTyped.code}. ${errTyped.stderr}`);
     }
 }
+
 
 async function injectBlob(blobFile: File, exeFile: File): Promise<Result<string, string>> {
     try {
         await exec(`npx postject ${exeFile.toString()} NODE_SEA_BLOB ${blobFile.toString()} --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2`);
-        return new SucceededResult(`Successfully injected blob into Node executable.`);
+        return new SucceededResult(`✅ Successfully injected blob into Node executable.`);
     }
     catch (err) {
         const errTyped = err as childProcess.ExecException & { stdout: string, stderr: string; };
-        return new FailedResult(`Blob injection failed. Postject exited with ${errTyped.code}. ${errTyped.stderr}`);
+        return new FailedResult(`❌ Blob injection failed. Postject exited with ${errTyped.code}. ${errTyped.stderr}`);
     }
 }
 
