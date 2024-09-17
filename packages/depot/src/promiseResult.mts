@@ -528,7 +528,7 @@ export namespace PromiseResult {
      * @returns The original input Result
      */
     export async function tapError<TSuccess, TError>(
-        fn: (val: TError) => Promise<unknown>,
+        fn: (val: TError) => unknown,
         input: Result<TSuccess, TError>
     ): Promise<Result<TSuccess, TError>> {
         if (input.failed) {
@@ -546,7 +546,7 @@ export namespace PromiseResult {
      * @returns The original input Result
      */
     export async function tapSuccess<TSuccess, TError>(
-        fn: (val: TSuccess) => Promise<unknown>,
+        fn: (val: TSuccess) => unknown,
         input: Result<TSuccess, TError>
     ): Promise<Result<TSuccess, TError>> {
         if (input.succeeded) {
