@@ -1,6 +1,6 @@
-import * as os from "os";
-import * as stream from "stream";
-import * as cp from "child_process";
+import * as os from "node:os";
+import * as stream from "node:stream";
+import * as cp from "node:child_process";
 import * as _ from "lodash-es";
 import stripAnsi from "strip-ansi";
 import { assertNever } from "@repo/depot/never";

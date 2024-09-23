@@ -1,7 +1,7 @@
-import * as fs from "fs";
-import * as fsp from "fs/promises";
-import * as path from "path";
-import * as crypto from "crypto";
+import * as fs from "node:fs";
+import * as fsp from "node:fs/promises";
+import * as path from "node:path";
+import * as crypto from "node:crypto";
 import * as readline from "readline";
 import * as _ from "lodash-es";
 import stripJsonComments from "strip-json-comments";

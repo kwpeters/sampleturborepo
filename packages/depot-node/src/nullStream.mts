@@ -1,4 +1,4 @@
-import {Writable, WritableOptions} from "stream";
+import {Writable, WritableOptions} from "node:stream";
 
 export class NullStream extends Writable {
     constructor(opts?: WritableOptions) {
