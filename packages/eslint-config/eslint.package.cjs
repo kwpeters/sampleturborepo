@@ -628,7 +628,7 @@ module.exports = {
         ],
         "no-useless-rename": "error",
         "no-var": "error",
-        // When curly braceless labmdas are passed to immer's produce(), the
+        // When curly braceless lambdas are passed to immer's produce(), the
         // return value confuses produce into thinking the next state is being
         // returned.  Using the void operator is a good way to prevent this.
         "no-void": "off",
