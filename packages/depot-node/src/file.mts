@@ -642,7 +642,7 @@ export class File {
      * @return A Promise that is resolved when the file has been written
      */
     public writeJson(
-        data: object  // eslint-disable-line @typescript-eslint/ban-types
+        data: object
     ): Promise<void> {
         const jsonText = JSON.stringify(data, undefined, 4);
         return this.write(jsonText);
@@ -656,7 +656,7 @@ export class File {
      * @param data - The data to be stringified and written
      */
     public writeJsonSync(
-        data: object  // eslint-disable-line @typescript-eslint/ban-types
+        data: object
     ): void {
         const jsonText = JSON.stringify(data, undefined, 4);
         return this.writeSync(jsonText);

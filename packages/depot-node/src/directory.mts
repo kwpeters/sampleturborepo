@@ -263,6 +263,7 @@ export class Directory {
                         .catch((err: ISystemError) => {
                             // If the directory already exists, just keep going.
                             if (err.code !== "EEXIST") {
+                                // eslint-disable-next-line @typescript-eslint/only-throw-error
                                 throw err;
                             }
                         });
