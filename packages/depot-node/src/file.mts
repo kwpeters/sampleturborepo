@@ -6,9 +6,9 @@ import * as readline from "readline";
 import * as _ from "lodash-es";
 import stripJsonComments from "strip-json-comments";
 import { FailedResult, Result, SucceededResult } from "@repo/depot/result";
-import {ListenerTracker} from "./listenerTracker.mjs";
-import {Directory} from "./directory.mjs";
-import {PathPart, reducePathParts} from "./pathHelpers.mjs";
+import { ListenerTracker } from "./listenerTracker.mjs";
+import { Directory } from "./directory.mjs";
+import { type PathPart, reducePathParts } from "./pathHelpers.mjs";
 
 
 /**

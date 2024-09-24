@@ -6,9 +6,9 @@ import stripAnsi from "strip-ansi";
 import { assertNever } from "@repo/depot/never";
 import { FailedResult, Result, SucceededResult } from "@repo/depot/result";
 import { eventToPromise } from "./promiseHelpers.mjs";
-import {CollectorStream} from "./collectorStream.mjs";
-import {NullStream} from "./nullStream.mjs";
-import { ISystemError } from "./nodeTypes.mjs";
+import { CollectorStream } from "./collectorStream.mjs";
+import { NullStream } from "./nullStream.mjs";
+import { type ISystemError } from "./nodeTypes.mjs";
 
 
 /**

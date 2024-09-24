@@ -5,9 +5,9 @@ import * as _ from "lodash-es";
 import { sequence, mapAsync } from "@repo/depot/promiseHelpers";
 import { StorageSize } from "@repo/depot/storageSize";
 import { matchesAny } from "@repo/depot/regexpHelpers";
-import {File} from "./file.mjs";
-import {PathPart, reducePathParts} from "./pathHelpers.mjs";
-import { ISystemError } from "./nodeTypes.mjs";
+import { File } from "./file.mjs";
+import { type PathPart, reducePathParts } from "./pathHelpers.mjs";
+import { type ISystemError } from "./nodeTypes.mjs";
 
 
 export interface IDirectoryContents {
